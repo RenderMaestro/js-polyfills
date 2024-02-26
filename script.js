@@ -41,4 +41,31 @@ promiseAll(taskList)
   })
   .catch(console.error);
 
+///Promise.race
 
+//The Promise.race() static method takes an iterable of promises as input and returns a single Promise.
+// This returned promise settles with the eventual state of the first promise that settles.
+
+const myPromiseRace = promiseArray => {
+  return new Promise((resolve, reject) => {
+    promiseArray.forEach(promise => {
+      Promise.resolve(promise).then(resolve).catch(reject);
+    });
+  });
+};
+
+const test1 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 500, 'one');
+});
+
+const test2 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'two');
+});
+
+myPromiseRace([test1, test2])
+  .then(value => {
+    console.log(value);
+  })
+  .catch(err => {
+    console.error(err);
+  });
